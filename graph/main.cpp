@@ -5,13 +5,6 @@ struct A {};
 struct B {};
 struct C {};
 
-/*
-template<typename T>
-struct is_A :std::conditional<
-	std::is_same_v<A,T>,
-	std::true_type,std::false_type>
-{};
-*/
 
 template<typename T>
 struct is_A {
@@ -22,28 +15,26 @@ struct is_A<A> {
 	static const bool value = true;
 };
 
+template<typename T>
+struct is_A_ : std::conditional<
+	std::is_same_v<A, T>,
+	std::true_type, std::false_type>::type
+{};
+
+template<typename T>
+struct boolean :T::type {};
 
 int main()
 {
 	using namespace graph;
 
-	//if constexpr()
-
-	is_A<A> a;
-	is_A<B> b;
-
-	/*
-	if constexpr (is_A<A>::type::value)
-		std::cout << "a";
-
-		*/
 	
-	if constexpr (std::is_same_v<utility::find_if<is_A, C, B,A>::type, A>)
+	if constexpr (utility::get_optional_arg<std::false_type, boolean, std::false_type,std::false_type,std::false_type>::type::value)
 		std::cout << "find A!!\n";
 	else
 		std::cout << "not find A\n";
 
-	if constexpr (std::is_same_v<utility::find_if<is_A, C, B>::type, A>)
+	if constexpr (utility::get_optional_arg<std::false_type, boolean, std::false_type, std::false_type, std::true_type>::type::value)
 		std::cout << "find A!!\n";
 	else
 		std::cout << "not find A\n";

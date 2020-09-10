@@ -3,6 +3,7 @@
   <ItemGroup>
     <ClInclude Include="graph.hpp" />
     <ClInclude Include="utility\get_optional_arg.hpp" />
+    <ClInclude Include="utility\find_if.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

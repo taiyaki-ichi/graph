@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="graph.hpp" />
+    <ClInclude Include="utility\find_if.hpp" />
     <ClInclude Include="utility\get_optional_arg.hpp" />
   </ItemGroup>
   <ItemGroup>
