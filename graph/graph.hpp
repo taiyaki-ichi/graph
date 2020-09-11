@@ -99,6 +99,9 @@ namespace graph
 			else
 				return false;
 		}
+
+
+
 	
 		bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
 
@@ -172,31 +175,54 @@ namespace graph
 				m_edge_property_list.erase(edgeProperty);
 		}
 
-		//出力
-		template<typename... Args>
-		friend std::ostream& operator<<(std::ostream&, const graph<Args...>&);
-	};
 
-	template<typename... Args>
-	std::ostream& operator<<(std::ostream& os, const graph<Args...>& g)
-	{
-		for (const auto& v : g.m_adjacency_list)
+	private:
+		void print_impl(const std::function<void(unsigned int)>& printFunc)
 		{
-			std::cout << v.first;
+			for (const auto& v : m_adjacency_list)
+			{
+				printFunc(v.first);
 
-			//有効の場合
-			if constexpr (graph<Args...>::is_directed::value)
-				std::cout << " -->";
-			else
-				std::cout << " ---";
+				//有効の場合
+				if constexpr (graph<Args...>::is_directed::value)
+					std::cout << " -->";
+				else
+					std::cout << " ---";
 
-			for (auto num : v.second)
-				std::cout << " " << num;
+				for (auto num : v.second) {
+					std::cout << " "; 
+					printFunc(num);
+				}
 
-			std::cout << "\n";
+				std::cout << "\n";
+			}
+		}
+	public:
+		void print() {
+			const auto printFnc = [](unsigned int num) {
+				std::cout << num;
+			};
+			print_impl(printFnc);
 		}
 
-		return os;
-	}
+		template<typename T>
+		void print(T&& str) {
+			const auto printFunc = [&str](unsigned int num) {
+				std::cout << str[num];
+			};
+			print_impl(printFunc);
+		}
+
+		//ある頂点に隣接しているリストの取得
+		const std::set<unsigned int>& get_adjacency_vertex(unsigned int v)
+		{
+			auto iter = m_adjacency_list.find(v);
+			if (iter != m_adjacency_list.end())
+				return iter->second;
+			else
+				return {};
+		}
+	};
+
 
 }
