@@ -53,9 +53,6 @@ namespace graph
 	template<typename... Args>
 	class graph{
 
-	public:
-
-
 		//使用する頂点情報
 		using vertex_property = typename utility::get_optional_arg<
 			set_vertex_property<default_vertex_property>,
@@ -85,11 +82,7 @@ namespace graph
 
 	public:
 		
-		graph() = default;
-		~graph() = default;
-
-		
-		//vertexを生成、内部で保持、アクセス子を渡す
+		//vertexを生成
 		bool add_vertex(unsigned int n) {
 			if (m_adjacency_list.insert({ n, {} }).second)
 			{
@@ -100,9 +93,7 @@ namespace graph
 				return false;
 		}
 
-
-
-	
+		//edge生成
 		bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
 
 			if (m_adjacency_list.find(edge.first) == m_adjacency_list.end() ||
@@ -213,6 +204,8 @@ namespace graph
 			print_impl(printFunc);
 		}
 
+
+
 		//ある頂点に隣接しているリストの取得
 		const std::set<unsigned int>& get_adjacency_vertex(unsigned int v)
 		{
@@ -221,6 +214,15 @@ namespace graph
 				return iter->second;
 			else
 				return {};
+		}
+
+		//すべての頂点の添え字を取得
+		std::vector<unsigned int> get_all_vertex_index() const
+		{
+			std::vector<unsigned int> result;
+			for (const auto& tmp : m_adjacency_list)
+				result.emplace_back(tmp.first);
+			return result;
 		}
 	};
 

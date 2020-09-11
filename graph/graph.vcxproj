@@ -141,6 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="for_each_policy.hpp" />
+    <ClInclude Include="search_iterator.hpp" />
     <ClInclude Include="graph.hpp" />
     <ClInclude Include="pair_hash.hpp" />
     <ClInclude Include="utility\find_if.hpp" />

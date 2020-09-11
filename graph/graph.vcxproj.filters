@@ -5,6 +5,8 @@
     <ClInclude Include="utility\get_optional_arg.hpp" />
     <ClInclude Include="utility\find_if.hpp" />
     <ClInclude Include="pair_hash.hpp" />
+    <ClInclude Include="search_iterator.hpp" />
+    <ClInclude Include="for_each_policy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
