@@ -1,14 +1,22 @@
 #include<iostream>
 #include"graph.hpp"
 
-
+struct my_vertex_property{};
+struct my_edge_property {};
 
 
 int main()
 {
 	
-	graph::graph<> myGraph{};
+	graph::graph<
+		graph::set_vertex_property<my_vertex_property>,
+		graph::set_edge_property<my_edge_property>
+	> myGraph{};
 
+	std::cout << typeid(decltype(myGraph)::vertex_property).name() << "\n";
+	std::cout << typeid(decltype(myGraph)::edge_property).name() << "\n";
+
+	
 	myGraph.add_vertex(0);
 	myGraph.add_vertex(1);
 	myGraph.add_vertex(2);
@@ -27,6 +35,6 @@ int main()
 
 	myGraph.remove_vertex(1);
 	std::cout << myGraph << "\n";
-
+	
 	return 0;
 }

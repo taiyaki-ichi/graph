@@ -16,28 +16,32 @@ namespace graph
 	struct default_vertex_property {};
 	//頂点に情報を持たせるとき
 	template<typename T>
-	struct customize_vertex_property {};
+	struct set_vertex_property {
+		using type = T;
+	};
 
 	template<typename>
 	struct is_customize_vertex {
 		static const bool value = false;
 	};
 	template<typename T>
-	struct is_customize_vertex<customize_vertex_property<T>> {
+	struct is_customize_vertex<set_vertex_property<T>> {
 		static const bool value = true;
 	};
 
 	struct default_edge_property {};
 	//辺に情報を持たせるとき
 	template<typename T>
-	struct customize_edge_property {};
+	struct set_edge_property {
+		using type = T;
+	};
 
 	template<typename>
 	struct is_customize_edge {
 		static const bool value = false;
 	};
 	template<typename T>
-	struct is_customize_edge<customize_edge_property<T>> {
+	struct is_customize_edge<set_edge_property<T>> {
 		static const bool value = true;
 	};
 
@@ -49,19 +53,22 @@ namespace graph
 	template<typename... Args>
 	class graph{
 
+	public:
+
+
 		//使用する頂点情報
 		using vertex_property = typename utility::get_optional_arg<
-			default_vertex_property,
+			set_vertex_property<default_vertex_property>,
 			is_customize_vertex,
 			Args...
-		>::type;
+		>::type::type;
 
 		//使用する辺の情報
 		using edge_property = typename utility::get_optional_arg<
-			default_edge_property,
+			set_edge_property<default_edge_property>,
 			is_customize_edge,
 			Args...
-		>::type;
+		>::type::type;
 
 		//有効グラフかどうか
 		using is_directed = typename utility::contain<directed, Args...>::type;
@@ -84,7 +91,13 @@ namespace graph
 		
 		//vertexを生成、内部で保持、アクセス子を渡す
 		bool add_vertex(unsigned int n) {
-			return m_adjacency_list.insert({ n, {} }).second;
+			if (m_adjacency_list.insert({ n, {} }).second)
+			{
+				m_vertex_property_list.insert({ n, {} });
+				return true;
+			}
+			else
+				return false;
 		}
 	
 		bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
@@ -93,14 +106,19 @@ namespace graph
 				m_adjacency_list.find(edge.second) == m_adjacency_list.end())
 				return false;
 
+			const auto add_if = [this](unsigned int a, unsigned int b)
+			{
+				if (m_adjacency_list.at(a).insert(b).second)
+					m_edge_property_list.insert({ std::make_pair(a,b),{} });
+			};
+
 			if constexpr (is_directed::value)
-				m_adjacency_list.at(edge.first).insert(edge.second);
+				add_if(edge.first, edge.second);
 			else {
-				m_adjacency_list.at(edge.first).insert(edge.second);
-				m_adjacency_list.at(edge.second).insert(edge.first);
+				add_if(edge.first, edge.second);
+				add_if(edge.second, edge.first);
 			}
 				
-
 			return true;
 		}
 		
@@ -125,14 +143,15 @@ namespace graph
 			{
 				if (edgeProperty->first.first == v || edgeProperty->first.second == v)
 					edgeProperty = m_edge_property_list.erase(edgeProperty);
-				edgeProperty++;
+				else
+					edgeProperty++;
 			}
 		}
 
 		//辺の削除
 		void remove_edge(const std::pair<unsigned int, unsigned int>& edge)
 		{
-			auto erase_if = [this](unsigned int a, unsigned int b) {
+			const auto erase_if = [this](unsigned int a, unsigned int b) {
 				auto iter = m_adjacency_list.find(a);
 				if (iter != m_adjacency_list.end())
 					iter->second.erase(b);
