@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="breadth_first_search.hpp" />
     <ClInclude Include="for_each_policy.hpp" />
     <ClInclude Include="search_iterator.hpp" />
     <ClInclude Include="graph.hpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="utility\get_optional_arg.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="breadth_first_search.cpp" />
     <ClCompile Include="for_each_policy.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

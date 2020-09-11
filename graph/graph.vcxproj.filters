@@ -7,9 +7,11 @@
     <ClInclude Include="pair_hash.hpp" />
     <ClInclude Include="search_iterator.hpp" />
     <ClInclude Include="for_each_policy.hpp" />
+    <ClInclude Include="breadth_first_search.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="for_each_policy.cpp" />
+    <ClCompile Include="breadth_first_search.cpp" />
   </ItemGroup>
 </Project>

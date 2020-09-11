@@ -52,7 +52,7 @@ namespace graph
 	//隣接リストで管理する予定
 	template<typename... Args>
 	class graph{
-
+	public:
 		//使用する頂点情報
 		using vertex_property = typename utility::get_optional_arg<
 			set_vertex_property<default_vertex_property>,
@@ -70,6 +70,7 @@ namespace graph
 		//有効グラフかどうか
 		using is_directed = typename utility::contain<directed, Args...>::type;
 
+	private:
 		//隣接リスト
 		//基本的に添え字で管理、対応するpropertyが存在
 		//コンテナは今のところvector固定で
@@ -204,10 +205,12 @@ namespace graph
 			print_impl(printFunc);
 		}
 
-
+		const std::unordered_map<unsigned int, std::set<unsigned int>>& get_adjacency_vertex_list() const {
+			return m_adjacency_list;
+		}
 
 		//ある頂点に隣接しているリストの取得
-		const std::set<unsigned int>& get_adjacency_vertex(unsigned int v)
+		const std::set<unsigned int>& get_adjacency_vertex(unsigned int v) const
 		{
 			auto iter = m_adjacency_list.find(v);
 			if (iter != m_adjacency_list.end())
