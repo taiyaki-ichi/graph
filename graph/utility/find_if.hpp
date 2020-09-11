@@ -34,7 +34,23 @@ namespace graph
 		template<template<typename>typename Predicate, typename... List>
 		struct find_if
 		{
-			using type = typename find_if_impl<Predicate, List...>::type;
+			using type = typename find_if_impl<Predicate, not_found,List...>::type;
+		};
+
+
+
+		template<typename T,typename... List>
+		struct contain 
+		{
+			template<typename U>
+			using check = typename std::is_same<T, U>::type;
+
+			using type = typename std::conditional<
+				std::is_same_v<typename find_if<check, not_found, List...>::type, not_found>,
+				std::false_type,
+				std::true_type
+			>::type;
+			
 		};
 	}
 }

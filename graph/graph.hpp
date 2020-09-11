@@ -1,6 +1,6 @@
 #pragma once
 #include"utility/get_optional_arg.hpp"
-#include<vector>
+#include<set>
 #include<unordered_map>
 
 namespace graph
@@ -39,6 +39,9 @@ namespace graph
 		static const bool value = true;
 	};
 
+
+
+
 	//グラフ本体
 	//隣接リストで管理する予定
 	template<typename... Args>
@@ -59,33 +62,52 @@ namespace graph
 		>::type;
 
 		//有効グラフかどうか
-		template<typename T>
-		using is_directed_impl = std::is_same<directed, T>;
-		using is_directed = typename std::is_same <
-			typename utility::find_if<is_directed_impl, Args...>::type,
-			directed
-		>;
+		using is_directed = typename utility::contain<directed, Args...>::type;
 
 		//隣接リスト
 		//基本的に添え字で管理、対応するpropertyが存在
 		//コンテナは今のところvector固定で
-		std::unordered_map<unsigned int,std::vector<unsigned int>> m_adjacency_list;
+		std::unordered_map<unsigned int,std::set<unsigned int>> m_adjacency_list;
 		//点の情報
 		std::unordered_map<unsigned int, vertex_property> m_vertex_list;
 		//辺の情報
-		std::unordered_map<std::pair<unsigned int,unsigned int>, edge_property> m_edge_list;
+		//std::unordered_map<std::pair<unsigned int,unsigned int>, edge_property> m_edge_list;
 		
 
 	public:
 		
-		//vertexを生成、内部で保持、アクセス子を渡す
-		bool add_vertex(unsigned int);
-		//同じ
-		bool add_edge(const std::pair<unsigned int, unsigned int>&);
+		graph() = default;
+		~graph() = default;
+
 		
+		//vertexを生成、内部で保持、アクセス子を渡す
+		bool add_vertex(unsigned int n) {
+			return m_adjacency_list.insert({ n, {} }).second;
+		}
+		//同じ
+		bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
+
+			if (m_adjacency_list.find(edge.first) == m_adjacency_list.end() ||
+				!m_adjacency_list.find(edge.second) == m_adjacency_list.end())
+				return false;
+
+			if constexpr (is_directed::value) {
+				m_adjacency_list.at(edge.first).insert(edge.second);
+				m_adjacency_list.at(edge.second).insert(edge.first);
+			}
+			else
+				m_adjacency_list.at(edge.first).insert(edge.second);
+
+			return true;
+		}
+		
+		
+		/*
 		void remove_vertex(unsigned int);
 		void remove_edge(const std::pair<unsigned int,unsigned int>&);
 		void remove_edge(unsigned int);
+		*/
 	};
 
+	
 }
