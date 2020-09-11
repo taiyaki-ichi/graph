@@ -34,6 +34,8 @@ namespace graph
 		template<template<typename>typename Predicate, typename... List>
 		struct find_if
 		{
+			//not_found‚ÍList‚Ì‘å‚«‚³‚ª0‚¾‚Á‚½—p
+			//•Ê‚Ì•û–@‚Åˆ—‚µ‚½‚¢
 			using type = typename find_if_impl<Predicate, not_found,List...>::type;
 		};
 

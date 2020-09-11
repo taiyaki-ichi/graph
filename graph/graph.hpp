@@ -2,6 +2,8 @@
 #include"utility/get_optional_arg.hpp"
 #include<set>
 #include<unordered_map>
+#include"pair_hash.hpp"
+#include<iostream>
 
 namespace graph
 {
@@ -69,9 +71,9 @@ namespace graph
 		//コンテナは今のところvector固定で
 		std::unordered_map<unsigned int,std::set<unsigned int>> m_adjacency_list;
 		//点の情報
-		std::unordered_map<unsigned int, vertex_property> m_vertex_list;
+		std::unordered_map<unsigned int, vertex_property> m_vertex_property_list;
 		//辺の情報
-		//std::unordered_map<std::pair<unsigned int,unsigned int>, edge_property> m_edge_list;
+		std::unordered_map<std::pair<unsigned int,unsigned int>, edge_property> m_edge_property_list;
 		
 
 	public:
@@ -84,30 +86,98 @@ namespace graph
 		bool add_vertex(unsigned int n) {
 			return m_adjacency_list.insert({ n, {} }).second;
 		}
-		//同じ
+	
 		bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
 
 			if (m_adjacency_list.find(edge.first) == m_adjacency_list.end() ||
-				!m_adjacency_list.find(edge.second) == m_adjacency_list.end())
+				m_adjacency_list.find(edge.second) == m_adjacency_list.end())
 				return false;
 
-			if constexpr (is_directed::value) {
+			if constexpr (is_directed::value)
+				m_adjacency_list.at(edge.first).insert(edge.second);
+			else {
 				m_adjacency_list.at(edge.first).insert(edge.second);
 				m_adjacency_list.at(edge.second).insert(edge.first);
 			}
-			else
-				m_adjacency_list.at(edge.first).insert(edge.second);
+				
 
 			return true;
 		}
 		
-		
-		/*
-		void remove_vertex(unsigned int);
-		void remove_edge(const std::pair<unsigned int,unsigned int>&);
-		void remove_edge(unsigned int);
-		*/
+		//頂点と関連する辺を削除
+		void remove_vertex(unsigned int v)
+		{
+			//リストの操作
+			auto iter = m_adjacency_list.find(v);
+			if (iter != m_adjacency_list.end())
+			{
+				m_adjacency_list.erase(iter);
+				for (auto& set : m_adjacency_list)
+					set.second.erase(v);
+			}
+
+			auto vertexProperty = m_vertex_property_list.find(v);
+			if (vertexProperty != m_vertex_property_list.end())
+				m_vertex_property_list.erase(vertexProperty);
+
+			auto edgeProperty = m_edge_property_list.begin();
+			while (edgeProperty != m_edge_property_list.end())
+			{
+				if (edgeProperty->first.first == v || edgeProperty->first.second == v)
+					edgeProperty = m_edge_property_list.erase(edgeProperty);
+				edgeProperty++;
+			}
+		}
+
+		//辺の削除
+		void remove_edge(const std::pair<unsigned int, unsigned int>& edge)
+		{
+			auto erase_if = [this](unsigned int a, unsigned int b) {
+				auto iter = m_adjacency_list.find(a);
+				if (iter != m_adjacency_list.end())
+					iter->second.erase(b);
+			};
+
+			//有効グラフの場合
+			if constexpr (is_directed::value)
+				erase_if(edge.first, edge.second);
+			//無効グラフ
+			else
+			{
+				erase_if(edge.first, edge.second);
+				erase_if(edge.second, edge.first);
+			}
+
+			auto edgeProperty = m_edge_property_list.find(edge);
+			if (edgeProperty != m_edge_property_list.end())
+				m_edge_property_list.erase(edgeProperty);
+		}
+
+		//出力
+		template<typename... Args>
+		friend std::ostream& operator<<(std::ostream&, const graph<Args...>&);
 	};
 
-	
+	template<typename... Args>
+	std::ostream& operator<<(std::ostream& os, const graph<Args...>& g)
+	{
+		for (const auto& v : g.m_adjacency_list)
+		{
+			std::cout << v.first;
+
+			//有効の場合
+			if constexpr (graph<Args...>::is_directed::value)
+				std::cout << " -->";
+			else
+				std::cout << " ---";
+
+			for (auto num : v.second)
+				std::cout << " " << num;
+
+			std::cout << "\n";
+		}
+
+		return os;
+	}
+
 }
