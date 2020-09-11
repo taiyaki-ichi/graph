@@ -24,9 +24,4 @@ namespace graph
 				return m_all_graph_vertex_index[m_index];
 		}
 	};
-
-	std::vector<unsigned int> for_each_policy::m_all_graph_vertex_index{};
-	int for_each_policy::m_index = 0;
-
-	
 }

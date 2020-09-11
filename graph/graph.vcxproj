@@ -149,6 +149,7 @@
     <ClInclude Include="utility\get_optional_arg.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="for_each_policy.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

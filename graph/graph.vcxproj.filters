@@ -10,5 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="for_each_policy.cpp" />
   </ItemGroup>
 </Project>
