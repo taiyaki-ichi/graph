@@ -7,7 +7,7 @@
 
 
 struct my_vertex_property{};
-struct my_edge_property {};
+struct my_edge_property { int weight; };
 
 int main()
 {
@@ -46,6 +46,8 @@ int main()
 	*/
 	
 	myGraph.print();
+
+	myGraph[{0, 1}].weight = 0;
 
 	for (auto iter : graph::DFS_preorder{myGraph,0})
 		std::cout << iter << " ";

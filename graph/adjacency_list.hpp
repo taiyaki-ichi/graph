@@ -277,6 +277,20 @@ namespace graph
 				result.emplace_back(tmp.first);
 			return result;
 		}
+
+		const vertex_property& operator[](unsigned int v) const {
+			return m_vertex_property_list[v];
+		}
+		vertex_property& operator[](unsigned v) {
+			return m_vertex_property_list[v];
+		}
+
+		const edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) const {
+			return m_edge_property_list[edge];
+		}
+		edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) {
+			return m_edge_property_list[edge];
+		}
 	};
 
 
