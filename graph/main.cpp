@@ -39,7 +39,7 @@ int main()
 	myGraph.add_edge({ 2,6 });
 
 
-	for (auto iter : graph::BFS{ myGraph,0 })
+	for (auto iter : graph::BFS_postorder{ myGraph,0 })
 		std::cout << iter << " ";
 
 	/*
