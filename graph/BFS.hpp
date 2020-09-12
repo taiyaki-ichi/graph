@@ -6,7 +6,7 @@
 namespace graph
 {
 
-	template<bool IsPreorder,typename... Args>
+	template<typename... Args>
 	struct BFS_iterator_type
 	{
 	private:
@@ -46,9 +46,7 @@ namespace graph
 	private:
 		static int action(int num)
 		{
-			if (m_queue.empty())
-				return -1;
-
+			
 			auto vertexList = m_adjacency_list.at(m_queue.front());
 			for (auto v : vertexList)
 			{
@@ -58,20 +56,12 @@ namespace graph
 					m_is_searched.insert_or_assign(v, true);
 					m_queue.push(v);
 
-					if constexpr (IsPreorder)
-						return v;
+					
+					return v;
 				}
 			}
 
-			if constexpr (!IsPreorder)
-			{
-				int tmp = m_queue.front();
-				m_queue.pop();
-				return tmp;
-			}
-			else
-				m_queue.pop();
-
+			m_queue.pop();
 
 			if (m_queue.empty())
 				return -1;
@@ -80,19 +70,19 @@ namespace graph
 		}
 	};
 
-	template<bool IsPreorder,typename... Args>
-	std::unordered_map<unsigned int, std::set<unsigned int>> BFS_iterator_type<IsPreorder, Args...>::m_adjacency_list;
-	template<bool IsPreorder, typename... Args>
-	std::queue<unsigned int> BFS_iterator_type<IsPreorder, Args...>::m_queue;
-	template<bool IsPreorder, typename... Args>
-	std::unordered_map<unsigned int, bool> BFS_iterator_type<IsPreorder, Args...>::m_is_searched;
+	template<typename... Args>
+	std::unordered_map<unsigned int, std::set<unsigned int>> BFS_iterator_type<Args...>::m_adjacency_list;
+	template<typename... Args>
+	std::queue<unsigned int> BFS_iterator_type<Args...>::m_queue;
+	template<typename... Args>
+	std::unordered_map<unsigned int, bool> BFS_iterator_type<Args...>::m_is_searched;
 
 	//コピー不可、範囲for文の一時オブジェクトとして使用
-	template<bool IsPreorder,typename... Args>
+	template<typename... Args>
 	struct BFS
 	{
 	private:
-		using BFS_iter = search_iterator<BFS_iterator_type<IsPreorder, Args...>>;
+		using BFS_iter = search_iterator<BFS_iterator_type<Args...>>;
 
 		const adjacency_list<Args...>* const m_graph;
 		const unsigned int m_from;
@@ -111,22 +101,12 @@ namespace graph
 			return BFS_iter::end();
 		}
 
+		BFS& operator=(const BFS&) = delete;
+		BFS& operator=(BFS&&) = delete;
+		BFS(const BFS&) = delete;
+		
+
 	};
 
-	//インターフェース
-	template<typename... Args>
-	struct BFS_preorder : BFS<true, Args...> {
-		BFS_preorder(const adjacency_list<Args...>& g,unsigned int from)
-			:BFS<true,Args...>{g,from}
-		{}
-	};
-
-	//インターフェース
-	template<typename... Args>
-	struct BFS_postorder : BFS<false, Args...> {
-		BFS_postorder(const adjacency_list<Args...>& g,unsigned int from)
-			:BFS < false, Args...>{g,from}
-		{}
-	};
 
 }

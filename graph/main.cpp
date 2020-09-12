@@ -2,13 +2,10 @@
 #include"graph.hpp"
 #include"search_iterator.hpp"
 #include"for_each_policy.hpp"
-#include"breadth_first_search.hpp"
+#include"BFS.hpp"
 
 struct my_vertex_property{};
 struct my_edge_property {};
-
-
-
 
 int main()
 {
@@ -39,8 +36,10 @@ int main()
 	myGraph.add_edge({ 2,6 });
 
 
-	for (auto iter : graph::BFS_postorder{ myGraph,0 })
+	for (auto iter : graph::BFS{ myGraph,0 })
 		std::cout << iter << " ";
+
+
 
 	/*
 	using for_each_iter = graph::search_iterator<graph::for_each_policy>;
