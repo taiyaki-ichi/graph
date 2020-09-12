@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BFS.hpp" />
+    <ClInclude Include="DFS.hpp" />
     <ClInclude Include="for_each_policy.hpp" />
     <ClInclude Include="search_iterator.hpp" />
     <ClInclude Include="graph.hpp" />

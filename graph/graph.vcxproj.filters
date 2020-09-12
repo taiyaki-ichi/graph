@@ -8,6 +8,7 @@
     <ClInclude Include="search_iterator.hpp" />
     <ClInclude Include="for_each_policy.hpp" />
     <ClInclude Include="BFS.hpp" />
+    <ClInclude Include="DFS.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

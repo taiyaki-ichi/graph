@@ -3,23 +3,19 @@
 #include"search_iterator.hpp"
 #include"for_each_policy.hpp"
 #include"BFS.hpp"
+#include"DFS.hpp"
+
 
 struct my_vertex_property{};
 struct my_edge_property {};
 
 int main()
 {
-
-	
-	
-
-	
 	graph::adjacency_list<
 		graph::set_vertex_property<my_vertex_property>,
 		graph::set_edge_property<my_edge_property>,
 		graph::directed
 	> myGraph{};
-	
 	
 	myGraph.add_vertex(0);
 	myGraph.add_vertex(1);
@@ -36,11 +32,17 @@ int main()
 	myGraph.add_edge({ 2,5 });
 	myGraph.add_edge({ 2,6 });
 	
+	myGraph.print();
 
-	for (auto iter : graph::BFS{ myGraph,0 })
+	for (auto iter : graph::DFS_preorder{myGraph,0})
 		std::cout << iter << " ";
-
-
+	std::cout << "\n";
+	for (auto iter : graph::DFS_postorder{ myGraph,0 })
+		std::cout << iter << " ";
+	std::cout << "\n";
+	for (auto iter : graph::BFS{myGraph,0})
+		std::cout << iter << " ";
+	std::cout << "\n";
 
 	/*
 	using for_each_iter = graph::search_iterator<graph::for_each_policy>;

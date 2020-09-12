@@ -10,8 +10,11 @@ namespace graph
 	struct BFS_iterator_type
 	{
 	private:
+		//グラフのポインタ
 		static const adjacency_list<Args...>* m_adjacency_list_ptr;
+		//キュー
 		static std::queue<unsigned int> m_queue;
+		//探索済みかどうか
 		static std::unordered_map<unsigned int, bool> m_is_searched;
 
 	public:
@@ -19,7 +22,7 @@ namespace graph
 		{
 			//fromが有効な値でないとき
 			if (g->get_adjacency_vertex_list().find(from) == g->get_adjacency_vertex_list().end())
-				return -1;
+				return search_iterator<BFS_iterator_type<Args...>>::end();
 
 			//以下、それぞれ初期化
 
@@ -56,7 +59,7 @@ namespace graph
 			for (auto v : vertexList)
 			{
 				//未探索の頂点がある場合
-				if (!(m_is_searched.find(v)->second))
+				if (!m_is_searched.at(v))
 				{
 					m_is_searched.insert_or_assign(v, true);
 					m_queue.push(v);
@@ -68,7 +71,7 @@ namespace graph
 			m_queue.pop();
 
 			if (m_queue.empty())
-				return -1;
+				return search_iterator<BFS_iterator_type<Args...>>::end();
 			else
 				return num;
 		}
@@ -77,10 +80,9 @@ namespace graph
 	template<typename... Args>
 	const adjacency_list<Args...>* BFS_iterator_type<Args...>::m_adjacency_list_ptr = nullptr;
 	template<typename... Args>
-	std::queue<unsigned int> BFS_iterator_type<Args...>::m_queue;
+	std::queue<unsigned int> BFS_iterator_type<Args...>::m_queue{};
 	template<typename... Args>
-	std::unordered_map<unsigned int, bool> BFS_iterator_type<Args...>::m_is_searched;
-
+	std::unordered_map<unsigned int, bool> BFS_iterator_type<Args...>::m_is_searched{};
 
 
 	//コピー不可、範囲for文の一時オブジェクトとして使用
