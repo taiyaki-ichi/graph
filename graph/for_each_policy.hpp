@@ -10,7 +10,7 @@ namespace graph
 		static int m_index;
 
 		template<typename... Args>
-		static int init(const graph<Args...>& g) {
+		static int init(const adjacency_list<Args...>& g) {
 			m_all_graph_vertex_index = g.get_all_vertex_index();
 			m_index = 0;
 			return m_all_graph_vertex_index[m_index];

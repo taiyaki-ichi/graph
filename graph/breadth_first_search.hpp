@@ -7,7 +7,7 @@ namespace graph
 {
 
 
-	struct breadth_first_preorder
+	struct BFS_iterator_type
 	{
 	private:
 		static std::unordered_map<unsigned int, std::set<unsigned int>> m_adjacency_list;
@@ -16,7 +16,7 @@ namespace graph
 
 	public:
 		template<typename... Args>
-		static int init(const graph<Args...>& g, unsigned int from)
+		static int init(const adjacency_list<Args...>& g, unsigned int from)
 		{
 			m_is_searched.clear();
 			auto vertex = g.get_all_vertex_index();
@@ -73,16 +73,16 @@ namespace graph
 
 
 	template<typename... Args>
-	struct breadth_first_serch
+	struct BFS
 	{
 	private:
-		using BFS_iter = search_iterator<breadth_first_preorder>;
+		using BFS_iter = search_iterator<BFS_iterator_type>;
 
-		const graph<Args...>* const m_graph;
+		const adjacency_list<Args...>* const m_graph;
 		const unsigned int m_from;
 
 	public:
-		breadth_first_serch(const graph<Args...>& g, unsigned int from)
+		BFS(const adjacency_list<Args...>& g, unsigned int from)
 			:m_graph{&g}
 			, m_from{from}
 		{

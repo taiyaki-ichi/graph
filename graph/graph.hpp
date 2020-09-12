@@ -51,7 +51,7 @@ namespace graph
 	//グラフ本体
 	//隣接リストで管理する予定
 	template<typename... Args>
-	class graph{
+	class adjacency_list{
 	public:
 		//使用する頂点情報
 		using vertex_property = typename utility::get_optional_arg<
@@ -176,7 +176,7 @@ namespace graph
 				printFunc(v.first);
 
 				//有効の場合
-				if constexpr (graph<Args...>::is_directed::value)
+				if constexpr (adjacency_list<Args...>::is_directed::value)
 					std::cout << " -->";
 				else
 					std::cout << " ---";

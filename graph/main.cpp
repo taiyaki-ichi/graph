@@ -17,7 +17,7 @@ int main()
 	
 
 	
-	graph::graph<
+	graph::adjacency_list<
 		graph::set_vertex_property<my_vertex_property>,
 		graph::set_edge_property<my_edge_property>,
 		graph::directed
@@ -39,7 +39,7 @@ int main()
 	myGraph.add_edge({ 2,6 });
 
 
-	for (auto iter : graph::breadth_first_serch{ myGraph,0 })
+	for (auto iter : graph::BFS{ myGraph,0 })
 		std::cout << iter << " ";
 
 	/*
