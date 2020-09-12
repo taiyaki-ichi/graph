@@ -6,7 +6,8 @@
 namespace graph
 {
 
-	//幅優先、先行順用のイテレータ
+	//もととなるイテレータもどき
+	//SearchTypeにinitとincrementを要求
 	template<typename SearchType>
 	struct search_iterator
 	{

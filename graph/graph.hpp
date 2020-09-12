@@ -206,6 +206,7 @@ namespace graph
 			print_impl(printFunc);
 		}
 
+		//‘S•”‚ÌƒŠƒXƒg‚Ìæ“¾
 		const std::unordered_map<unsigned int, std::set<unsigned int>>& get_adjacency_vertex_list() const {
 			return m_adjacency_list;
 		}

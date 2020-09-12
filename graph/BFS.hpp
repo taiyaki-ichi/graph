@@ -47,12 +47,14 @@ namespace graph
 			while(1)
 			{
 				next = action(num);
+				//操作によって添え字が進められた場合
 				if (next != num)
 					return next;
 			}
 		}
 
 	private:
+		//アルゴリズムを1ステップ進める
 		static int action(int num)
 		{
 			auto vertexList = m_adjacency_list_ptr->get_adjacency_vertex(m_queue.front());

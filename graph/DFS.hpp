@@ -45,6 +45,7 @@ namespace graph
 				while (1)
 				{
 					num = action(num);
+					//操作によって添え字が変更された場合
 					if (num != from)
 						break;
 				}
@@ -65,6 +66,7 @@ namespace graph
 		}
 
 	private:
+		//アルゴリズムを1ステップ進める
 		static int action(int num)
 		{
 			if (m_stack.empty())
