@@ -4,8 +4,8 @@
 namespace std
 {
 	template<>
-	struct hash<std::pair<unsigned int,unsigned int>> {
-		size_t operator()(const std::pair<unsigned int,unsigned int>& edge) const {
+	struct hash<std::pair<unsigned int, unsigned int>> {
+		size_t operator()(const std::pair<unsigned int, unsigned int>& edge) const {
 
 			size_t seed = 0;
 			auto xHash = hash<unsigned int>()(edge.first);

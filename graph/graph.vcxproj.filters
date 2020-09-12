@@ -4,11 +4,11 @@
     <ClInclude Include="graph.hpp" />
     <ClInclude Include="utility\get_optional_arg.hpp" />
     <ClInclude Include="utility\find_if.hpp" />
-    <ClInclude Include="pair_hash.hpp" />
     <ClInclude Include="search_iterator.hpp" />
     <ClInclude Include="for_each_policy.hpp" />
     <ClInclude Include="BFS.hpp" />
     <ClInclude Include="DFS.hpp" />
+    <ClInclude Include="utility\pair_hash.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
