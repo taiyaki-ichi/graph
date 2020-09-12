@@ -4,6 +4,7 @@
 #include<unordered_map>
 #include"pair_hash.hpp"
 #include<iostream>
+#include<optional>
 
 namespace graph
 {
@@ -212,11 +213,7 @@ namespace graph
 		//ある頂点に隣接しているリストの取得
 		const std::set<unsigned int>& get_adjacency_vertex(unsigned int v) const
 		{
-			auto iter = m_adjacency_list.find(v);
-			if (iter != m_adjacency_list.end())
-				return iter->second;
-			else
-				return {};
+			return m_adjacency_list.at(v);
 		}
 
 		//すべての頂点の添え字を取得

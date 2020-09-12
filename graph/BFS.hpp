@@ -10,15 +10,21 @@ namespace graph
 	struct BFS_iterator_type
 	{
 	private:
-		static std::unordered_map<unsigned int, std::set<unsigned int>> m_adjacency_list;
+		static const adjacency_list<Args...>* m_adjacency_list_ptr;
 		static std::queue<unsigned int> m_queue;
 		static std::unordered_map<unsigned int, bool> m_is_searched;
 
 	public:
-		static int init(const adjacency_list<Args...>& g, unsigned int from)
+		static int init(const adjacency_list<Args...>* const g, unsigned int from)
 		{
+			//fromが有効な値でないとき
+			if (g->get_adjacency_vertex_list().find(from) == g->get_adjacency_vertex_list().end())
+				return -1;
+
+			//以下、それぞれ初期化
+
 			m_is_searched.clear();
-			auto vertex = g.get_all_vertex_index();
+			auto vertex = g->get_all_vertex_index();
 			for (auto num : vertex)
 				m_is_searched.insert({ num, false });
 			m_is_searched.insert_or_assign( from,true );
@@ -27,7 +33,7 @@ namespace graph
 				m_queue.pop();
 			m_queue.push(from);
 
-			m_adjacency_list = g.get_adjacency_vertex_list();
+			m_adjacency_list_ptr = g;
 
 			return from;
 		}
@@ -46,8 +52,7 @@ namespace graph
 	private:
 		static int action(int num)
 		{
-			
-			auto vertexList = m_adjacency_list.at(m_queue.front());
+			auto vertexList = m_adjacency_list_ptr->get_adjacency_vertex(m_queue.front());
 			for (auto v : vertexList)
 			{
 				//未探索の頂点がある場合
@@ -56,11 +61,10 @@ namespace graph
 					m_is_searched.insert_or_assign(v, true);
 					m_queue.push(v);
 
-					
 					return v;
 				}
 			}
-
+			
 			m_queue.pop();
 
 			if (m_queue.empty())
@@ -71,11 +75,13 @@ namespace graph
 	};
 
 	template<typename... Args>
-	std::unordered_map<unsigned int, std::set<unsigned int>> BFS_iterator_type<Args...>::m_adjacency_list;
+	const adjacency_list<Args...>* BFS_iterator_type<Args...>::m_adjacency_list_ptr = nullptr;
 	template<typename... Args>
 	std::queue<unsigned int> BFS_iterator_type<Args...>::m_queue;
 	template<typename... Args>
 	std::unordered_map<unsigned int, bool> BFS_iterator_type<Args...>::m_is_searched;
+
+
 
 	//コピー不可、範囲for文の一時オブジェクトとして使用
 	template<typename... Args>
@@ -94,7 +100,7 @@ namespace graph
 		{}
 
 		BFS_iter begin() {
-			return BFS_iter::begin(*m_graph, m_from);
+			return BFS_iter::begin(m_graph, m_from);
 		}
 
 		BFS_iter end() {
@@ -104,8 +110,6 @@ namespace graph
 		BFS& operator=(const BFS&) = delete;
 		BFS& operator=(BFS&&) = delete;
 		BFS(const BFS&) = delete;
-		
-
 	};
 
 

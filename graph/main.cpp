@@ -20,6 +20,7 @@ int main()
 		graph::directed
 	> myGraph{};
 	
+	
 	myGraph.add_vertex(0);
 	myGraph.add_vertex(1);
 	myGraph.add_vertex(2);
@@ -34,7 +35,7 @@ int main()
 	myGraph.add_edge({ 3,4 });
 	myGraph.add_edge({ 2,5 });
 	myGraph.add_edge({ 2,6 });
-
+	
 
 	for (auto iter : graph::BFS{ myGraph,0 })
 		std::cout << iter << " ";

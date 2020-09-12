@@ -16,9 +16,6 @@ namespace graph
 		//“Y‚¦š
 		int m_num;
 
-		//std::stack<unsigned int> m_stack;
-		//std::unordered_map<unsigned int, bool> m_searched_vertex_list;
-
 	public:
 		search_iterator(int n)
 			:m_num{n}
