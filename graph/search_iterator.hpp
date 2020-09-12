@@ -1,7 +1,7 @@
 #pragma once
 #include<stack>
 #include<unordered_map>
-#include"graph.hpp"
+#include"adjacency_list.hpp"
 
 namespace graph
 {

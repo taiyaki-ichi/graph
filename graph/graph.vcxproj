@@ -145,7 +145,7 @@
     <ClInclude Include="DFS.hpp" />
     <ClInclude Include="for_each_policy.hpp" />
     <ClInclude Include="search_iterator.hpp" />
-    <ClInclude Include="graph.hpp" />
+    <ClInclude Include="adjacency_list.hpp" />
     <ClInclude Include="utility\find_if.hpp" />
     <ClInclude Include="utility\get_optional_arg.hpp" />
     <ClInclude Include="utility\pair_hash.hpp" />
