@@ -291,6 +291,29 @@ namespace graph
 		edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) {
 			return m_edge_property_list[edge];
 		}
+
+		//頂点情報のセッティング
+		void set_property(std::pair<unsigned int, vertex_property>&& p) {
+			m_vertex_property_list[p.first] = std::move(p.second);
+		}
+		void set_property(std::vector<std::pair<unsigned int, vertex_property>>&& ps) {
+			for (auto&& p : ps)
+				set_property(std::move(p));
+		}
+
+		//辺の情報のセッティング
+		void set_property(std::pair<std::pair<unsigned int, unsigned int>, edge_property>&& p) {
+			m_edge_property_list[p.first] = p.second;
+		}
+		void set_property(std::vector<std::pair<std::pair<unsigned int, unsigned int>, edge_property>>&& ps) {
+			for (auto&& p : ps)
+				set_property(std::move(p));
+		}
+
+
+
+
+
 	};
 
 
