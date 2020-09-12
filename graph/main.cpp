@@ -8,8 +8,14 @@ struct my_vertex_property{};
 struct my_edge_property {};
 
 
+
+
 int main()
 {
+
+	
+	
+
 	
 	graph::graph<
 		graph::set_vertex_property<my_vertex_property>,
@@ -33,6 +39,10 @@ int main()
 	myGraph.add_edge({ 2,6 });
 
 
+	for (auto iter : graph::breadth_first_serch{ myGraph,0 })
+		std::cout << iter << " ";
+
+	/*
 	using for_each_iter = graph::search_iterator<graph::for_each_policy>;
 
 	for (auto iter = for_each_iter::begin(myGraph); iter != for_each_iter::end(); ++iter)
@@ -40,9 +50,10 @@ int main()
 
 	std::cout << "\n";
 
-	using BFS_iter = graph::search_iterator<graph::breadth_first_search_preorder>;
+	using BFS_iter = graph::search_iterator<graph::breadth_first_preorder>;
 	for (auto iter = BFS_iter::begin(myGraph, 0); iter != BFS_iter::end(); ++iter)
 		std::cout << iter << " ";
-
+		*/
+	
 	return 0;
 }

@@ -1,16 +1,20 @@
 #pragma once
 #include"graph.hpp"
 #include<queue>
+#include"search_iterator.hpp"
 
 namespace graph
 {
-	struct breadth_first_search_preorder
-	{
 
+
+	struct breadth_first_preorder
+	{
+	private:
 		static std::unordered_map<unsigned int, std::set<unsigned int>> m_adjacency_list;
 		static std::queue<unsigned int> m_queue;
 		static std::unordered_map<unsigned int, bool> m_is_searched;
 
+	public:
 		template<typename... Args>
 		static int init(const graph<Args...>& g, unsigned int from)
 		{
@@ -58,14 +62,6 @@ namespace graph
 
 			m_queue.pop();
 
-			/*
-			auto tmp = m_queue;
-			while (!tmp.empty()) {
-				std::cout << tmp.front() << " ";
-				
-			}
-			*/
-
 			if (m_queue.empty())
 				return -1;
 			else
@@ -74,4 +70,33 @@ namespace graph
 
 
 	};
+
+
+	template<typename... Args>
+	struct breadth_first_serch
+	{
+	private:
+		using BFS_iter = search_iterator<breadth_first_preorder>;
+
+		const graph<Args...>* const m_graph;
+		const unsigned int m_from;
+
+	public:
+		breadth_first_serch(const graph<Args...>& g, unsigned int from)
+			:m_graph{&g}
+			, m_from{from}
+		{
+
+		}
+
+		BFS_iter begin() {
+			return BFS_iter::begin(*m_graph, m_from);
+		}
+
+		BFS_iter end() {
+			return BFS_iter::end();
+		}
+
+	};
+
 }
