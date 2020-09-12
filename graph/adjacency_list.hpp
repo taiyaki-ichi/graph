@@ -83,12 +83,64 @@ namespace graph
 		
 
 	public:
-		
+		adjacency_list() = default;
+		virtual ~adjacency_list() = default;
+
+		template<typename Container>
+		adjacency_list(Container&& list)
+			:m_adjacency_list {}
+			, m_vertex_property_list{}
+			, m_edge_property_list{}
+		{
+			//コンテナの要素が頂点の遠きのとき
+			if constexpr (std::is_same_v<typename Container::value_type, unsigned int>)
+			{
+				for (auto v : list)
+					add_vertex(v);
+			}
+			//辺のとき
+			else if constexpr (std::is_same_v<typename Container::value_type, std::pair<unsigned int, unsigned int>>)
+			{
+				for (auto edge : list)
+				{
+					//頂点追加
+					add_vertex(edge.first);
+					add_vertex(edge.second);
+
+					add_edge(std::move(edge));
+				}
+			}
+		}
+
+		adjacency_list(const adjacency_list& rhs) {
+			m_adjacency_list = rhs.m_adjacency_list;
+			m_vertex_property_list = rhs.m_vertex_property_list;
+			m_edge_property_list = rhs.m_edge_property_list;
+		}
+		adjacency_list(adjacency_list&& rhs) {
+			m_adjacency_list = std::move(rhs.m_adjacency_list);
+			m_vertex_property_list = std::move(rhs.m_vertex_property_list);
+			m_edge_property_list = std::move(m_edge_property_list);
+		}
+
+		adjacency_list& operator=(const adjacency_list& rhs) {
+			m_adjacency_list = rhs.m_adjacency_list;
+			m_vertex_property_list = rhs.m_vertex_property_list;
+			m_edge_property_list = rhs.m_edge_property_list;
+			return *this;
+		}
+		adjacency_list& operator=(adjacency_list&& rhs) {
+			m_adjacency_list = std::move(rhs.m_adjacency_list);
+			m_vertex_property_list = std::move(rhs.m_vertex_property_list);
+			m_edge_property_list = std::move(m_edge_property_list);
+			return this;
+		}
+	
 		//vertexを生成
 		bool add_vertex(unsigned int n) {
-			if (m_adjacency_list.insert({ n, {} }).second)
+			if (m_adjacency_list.try_emplace(n, std::set<unsigned int>{}).second)
 			{
-				m_vertex_property_list.insert({ n, {} });
+				m_vertex_property_list.emplace(n, vertex_property{});
 				return true;
 			}
 			else

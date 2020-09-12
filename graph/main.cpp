@@ -11,12 +11,24 @@ struct my_edge_property {};
 
 int main()
 {
+	std::vector<std::pair<unsigned int, unsigned int>> list =
+	{
+		{0,1},
+		{0,2},
+		{1,3},
+		{3,4},
+		{2,5},
+		{2,6}
+	};
+
 	graph::adjacency_list<
 		graph::set_vertex_property<my_vertex_property>,
 		graph::set_edge_property<my_edge_property>,
 		graph::directed
-	> myGraph{};
+	> myGraph{ std::move(list) };
 	
+	
+	/*
 	myGraph.add_vertex(0);
 	myGraph.add_vertex(1);
 	myGraph.add_vertex(2);
@@ -31,6 +43,7 @@ int main()
 	myGraph.add_edge({ 3,4 });
 	myGraph.add_edge({ 2,5 });
 	myGraph.add_edge({ 2,6 });
+	*/
 	
 	myGraph.print();
 
