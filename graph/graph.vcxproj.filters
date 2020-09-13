@@ -9,6 +9,7 @@
     <ClInclude Include="DFS.hpp" />
     <ClInclude Include="utility\pair_hash.hpp" />
     <ClInclude Include="adjacency_list.hpp" />
+    <ClInclude Include="dijkstra_shortest_paths.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

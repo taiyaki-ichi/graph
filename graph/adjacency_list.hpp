@@ -169,6 +169,16 @@ namespace graph
 				
 			return true;
 		}
+
+		bool add_edge(const std::pair<unsigned int, unsigned int>& edge, const edge_property& property) {
+			if (add_edge(edge))
+			{
+				set_property({ edge, property });
+				return true;
+			}
+			else
+				return false;
+		}
 		
 		//’¸“_‚ÆŠÖ˜A‚·‚é•Ó‚ğíœ
 		void remove_vertex(unsigned int v)
@@ -286,7 +296,7 @@ namespace graph
 		}
 
 		const edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) const {
-			return m_edge_property_list[edge];
+			return m_edge_property_list.at(edge);
 		}
 		edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) {
 			return m_edge_property_list[edge];
