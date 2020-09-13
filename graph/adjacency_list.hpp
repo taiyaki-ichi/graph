@@ -313,7 +313,13 @@ namespace graph
 
 		//辺の情報のセッティング
 		void set_property(std::pair<std::pair<unsigned int, unsigned int>, edge_property>&& p) {
-			m_edge_property_list[p.first] = p.second;
+			if constexpr (is_directed::value)
+				m_edge_property_list[p.first] = p.second;
+			else
+			{
+				m_edge_property_list[p.first] = p.second;
+				m_edge_property_list[{p.first.second, p.first.first}] = p.second;
+			}
 		}
 		void set_property(std::vector<std::pair<std::pair<unsigned int, unsigned int>, edge_property>>&& ps) {
 			for (auto&& p : ps)

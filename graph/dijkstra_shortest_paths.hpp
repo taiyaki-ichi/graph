@@ -93,7 +93,7 @@ namespace graph
 			for (auto v : g.get_adjacency_vertex(minIndex))
 			{
 				T newDistance = distance->at(minIndex).value() + g[{minIndex, v}].*edge_property_ptr;
-				if (!distance->at(v) || distance->at(v).value() > newDistance)
+				if (!(distance->at(v)) || distance->at(v).value() > newDistance)
 				{
 					(*distance)[v] = newDistance;
 					(*parent)[v] = minIndex;

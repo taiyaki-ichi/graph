@@ -69,17 +69,25 @@ int main()
 	myGraph.add_edge({ 6,7 }, {2});
 
 	myGraph.print();
+	std::cout << "\n";
 	
 	std::unordered_map<unsigned int, unsigned int> parent{};
+	std::unordered_map<unsigned int, std::optional<int>> distance{};
 	
 	unsigned int from = 0;
 	unsigned int to = 7;
 	
-	graph::dijkstra_shortest_paths(myGraph, from, &my_edge_property::weight, &parent);
+	graph::dijkstra_shortest_paths(myGraph, from, &my_edge_property::weight, &parent, &distance);
 
 	std::cout << "parent\n";
 	for (size_t i = 0; i < parent.size(); i++)
 		std::cout << i << ": " << parent[i] << "\n";
+	std::cout << "\n";
+
+	std::cout << "distance\n";
+	for (size_t i = 0; i < distance.size(); i++)
+		if (distance[i])
+			std::cout << i << ": " << distance[i].value() << "\n";
 	std::cout << "\n";
 
 	return 0;
