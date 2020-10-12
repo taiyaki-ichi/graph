@@ -1,5 +1,5 @@
 #pragma once
-#include"adjacency_list.hpp"
+#include"../adjacency_list.hpp"
 #include<queue>
 #include"search_iterator.hpp"
 
@@ -30,7 +30,7 @@ namespace graph
 			auto vertex = g->get_all_vertex_index();
 			for (auto num : vertex)
 				m_is_searched.insert({ num, false });
-			m_is_searched.insert_or_assign( from,true );
+			m_is_searched.insert_or_assign(from, true);
 
 			while (!m_queue.empty())
 				m_queue.pop();
@@ -44,7 +44,7 @@ namespace graph
 		static int increment(int num)
 		{
 			int next{};
-			while(1)
+			while (1)
 			{
 				next = action(num);
 				//‘€ì‚É‚æ‚Á‚Ä“Y‚¦š‚ªi‚ß‚ç‚ê‚½ê‡
@@ -69,7 +69,7 @@ namespace graph
 					return v;
 				}
 			}
-			
+
 			m_queue.pop();
 
 			if (m_queue.empty())
@@ -99,8 +99,8 @@ namespace graph
 
 	public:
 		BFS(const adjacency_list<Args...>& g, unsigned int from)
-			:m_graph{&g}
-			, m_from{from}
+			:m_graph{ &g }
+			, m_from{ from }
 		{}
 
 		BFS_iter begin() {

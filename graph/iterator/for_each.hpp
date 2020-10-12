@@ -1,10 +1,10 @@
 #pragma once
-#include"adjacency_list.hpp"
+#include"../adjacency_list.hpp"
 
 namespace graph
 {
 	//‡•s“¯‚Å‚·‚×‚Ä’T‚é
-	struct for_each_policy
+	struct for_each
 	{
 		static std::vector<unsigned int> m_all_graph_vertex_index;
 		static int m_index;

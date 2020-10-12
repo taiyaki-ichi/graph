@@ -1,7 +1,7 @@
 #pragma once
 #include<stack>
 #include<unordered_map>
-#include"adjacency_list.hpp"
+#include"../adjacency_list.hpp"
 
 namespace graph
 {
@@ -19,7 +19,7 @@ namespace graph
 
 	public:
 		search_iterator(int n)
-			:m_num{n}
+			:m_num{ n }
 		{}
 
 		template<typename... Ts>
@@ -58,7 +58,7 @@ namespace graph
 		}
 	};
 
-	
+
 
 
 }

@@ -1,9 +1,9 @@
 #include<iostream>
 #include"adjacency_list.hpp"
-#include"search_iterator.hpp"
-#include"for_each_policy.hpp"
-#include"BFS.hpp"
-#include"DFS.hpp"
+#include"iterator/search_iterator.hpp"
+#include"iterator/for_each.hpp"
+#include"iterator/BFS.hpp"
+#include"iterator/DFS.hpp"
 
 #include"dijkstra_shortest_paths.hpp"
 

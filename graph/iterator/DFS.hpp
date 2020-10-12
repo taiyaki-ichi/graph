@@ -1,12 +1,12 @@
 #pragma once
-#include"adjacency_list.hpp"
+#include"../adjacency_list.hpp"
 #include"search_iterator.hpp"
 #include<stack>
 
 namespace graph
 {
 
-	template<bool IsPreorder,typename... Args>
+	template<bool IsPreorder, typename... Args>
 	struct DFS_iterator_type
 	{
 	private:
@@ -22,7 +22,7 @@ namespace graph
 		{
 			//from‚ª—LŒø‚È’l‚Å‚È‚¢‚Æ‚«
 			if (g->get_adjacency_vertex_list().find(from) == g->get_adjacency_vertex_list().end())
-				return search_iterator<DFS_iterator_type<IsPreorder,Args...>>::end();
+				return search_iterator<DFS_iterator_type<IsPreorder, Args...>>::end();
 
 			//ˆÈ‰ºA‚»‚ê‚¼‚ê‰Šú‰»
 
@@ -70,7 +70,7 @@ namespace graph
 		static int action(int num)
 		{
 			if (m_stack.empty())
-				return search_iterator<DFS_iterator_type<IsPreorder,Args...>>::end();
+				return search_iterator<DFS_iterator_type<IsPreorder, Args...>>::end();
 
 			auto vertexList = m_adjacency_list_ptr->get_adjacency_vertex(m_stack.top());
 			bool pushFlag = false;
@@ -114,7 +114,7 @@ namespace graph
 					return nextNum;
 				}
 			}
-			
+
 		}
 	};
 

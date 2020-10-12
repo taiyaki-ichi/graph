@@ -141,18 +141,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BFS.hpp" />
-    <ClInclude Include="DFS.hpp" />
     <ClInclude Include="dijkstra_shortest_paths.hpp" />
-    <ClInclude Include="for_each_policy.hpp" />
-    <ClInclude Include="search_iterator.hpp" />
+    <ClInclude Include="iterator\BFS.hpp" />
+    <ClInclude Include="iterator\DFS.hpp" />
+    <ClInclude Include="iterator\for_each.hpp" />
+    <ClInclude Include="iterator\search_iterator.hpp" />
     <ClInclude Include="adjacency_list.hpp" />
     <ClInclude Include="utility\find_if.hpp" />
     <ClInclude Include="utility\get_optional_arg.hpp" />
     <ClInclude Include="utility\pair_hash.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="for_each_policy.cpp" />
+    <ClCompile Include="iterator\for_each.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
