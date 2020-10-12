@@ -7,22 +7,28 @@ namespace graph
 {
 
 	template<typename... Args>
-	struct BFS_iterator_type
+	struct BFS_iterator_body
 	{
 	private:
 		//グラフのポインタ
-		static const adjacency_list<Args...>* m_adjacency_list_ptr;
+		const adjacency_list<Args...>* m_adjacency_list_ptr;
 		//キュー
-		static std::queue<unsigned int> m_queue;
+		std::queue<unsigned int> m_queue;
 		//探索済みかどうか
-		static std::unordered_map<unsigned int, bool> m_is_searched;
+		std::unordered_map<unsigned int, bool> m_is_searched;
 
 	public:
-		static int init(const adjacency_list<Args...>* const g, unsigned int from)
+		constexpr BFS_iterator_body()
+			:m_adjacency_list_ptr{nullptr}
+			, m_queue{}
+			, m_is_searched{}
+		{}
+
+		int init(const adjacency_list<Args...>* const g, unsigned int from)
 		{
 			//fromが有効な値でないとき
 			if (g->get_adjacency_vertex_list().find(from) == g->get_adjacency_vertex_list().end())
-				return search_iterator<BFS_iterator_type<Args...>>::end();
+				return search_iterator<BFS_iterator_body<Args...>>::end();
 
 			//以下、それぞれ初期化
 
@@ -41,7 +47,7 @@ namespace graph
 			return from;
 		}
 
-		static int increment(int num)
+		int increment(int num)
 		{
 			int next{};
 			while (1)
@@ -55,7 +61,7 @@ namespace graph
 
 	private:
 		//アルゴリズムを1ステップ進める
-		static int action(int num)
+		int action(int num)
 		{
 			auto vertexList = m_adjacency_list_ptr->get_adjacency_vertex(m_queue.front());
 			for (auto v : vertexList)
@@ -73,18 +79,12 @@ namespace graph
 			m_queue.pop();
 
 			if (m_queue.empty())
-				return search_iterator<BFS_iterator_type<Args...>>::end();
+				return search_iterator<BFS_iterator_body<Args...>>::end();
 			else
 				return num;
 		}
 	};
 
-	template<typename... Args>
-	const adjacency_list<Args...>* BFS_iterator_type<Args...>::m_adjacency_list_ptr = nullptr;
-	template<typename... Args>
-	std::queue<unsigned int> BFS_iterator_type<Args...>::m_queue{};
-	template<typename... Args>
-	std::unordered_map<unsigned int, bool> BFS_iterator_type<Args...>::m_is_searched{};
 
 
 	//コピー不可、範囲for文の一時オブジェクトとして使用
@@ -92,7 +92,7 @@ namespace graph
 	struct BFS
 	{
 	private:
-		using BFS_iter = search_iterator<BFS_iterator_type<Args...>>;
+		using BFS_iter = search_iterator<BFS_iterator_body<Args...>>;
 
 		const adjacency_list<Args...>* const m_graph;
 		const unsigned int m_from;
@@ -107,7 +107,7 @@ namespace graph
 			return BFS_iter::begin(m_graph, m_from);
 		}
 
-		BFS_iter end() {
+		const BFS_iter& end() {
 			return BFS_iter::end();
 		}
 

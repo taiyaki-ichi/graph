@@ -291,7 +291,7 @@ namespace graph
 		constexpr const vertex_property& operator[](unsigned int v) const {
 			return m_vertex_property_list[v];
 		}
-		constexpr vertex_property& operator[](unsigned v) {
+		constexpr vertex_property& operator[](unsigned int v) {
 			return m_vertex_property_list[v];
 		}
 

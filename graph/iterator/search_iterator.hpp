@@ -1,14 +1,14 @@
 #pragma once
 #include<stack>
 #include<unordered_map>
+#include<memory>
 #include"../adjacency_list.hpp"
 
 namespace graph
 {
 
 	//もととなるイテレータもどき
-	//SearchTypeにinitとincrementを要求
-	template<typename SearchType>
+	template<typename SearchBody>
 	struct search_iterator
 	{
 	private:
@@ -17,19 +17,25 @@ namespace graph
 		//添え字
 		int m_num;
 
+		std::shared_ptr<SearchBody> m_search_body;
+
 	public:
-		search_iterator(int n)
+		search_iterator(int n,std::shared_ptr<SearchBody>&& ptr)
 			:m_num{ n }
+			, m_search_body{std::move(ptr)}
 		{}
 
 		template<typename... Ts>
 		static search_iterator begin(Ts... ts) {
-			int num = SearchType::init(std::forward<Ts>(ts)...);
-			return { num };
+
+			auto ptr = std::make_shared<SearchBody>();
+			int num = ptr->init(std::forward<Ts>(ts)...);
+
+			return { num,std::move(ptr) };
 		}
 
 		static const search_iterator& end() {
-			static search_iterator end{ -1 };
+			static search_iterator<SearchBody> end{ -1 ,nullptr };
 			return end;
 		}
 
@@ -43,7 +49,8 @@ namespace graph
 
 		//前進
 		iter& operator++() {
-			m_num = SearchType::increment(m_num);
+			if (m_search_body)
+				m_num = m_search_body->increment(m_num);
 			return *this;
 		}
 

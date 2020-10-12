@@ -152,7 +152,6 @@
     <ClInclude Include="utility\pair_hash.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="iterator\for_each.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

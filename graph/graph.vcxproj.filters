@@ -13,6 +13,5 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="iterator\for_each.cpp" />
   </ItemGroup>
 </Project>

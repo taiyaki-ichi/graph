@@ -3,26 +3,33 @@
 #include"search_iterator.hpp"
 #include<stack>
 
+
 namespace graph
 {
 
 	template<bool IsPreorder, typename... Args>
-	struct DFS_iterator_type
+	struct DFS_iterator_body
 	{
 	private:
 		//グラフのポインタ
-		static const adjacency_list<Args...>* m_adjacency_list_ptr;
+		const adjacency_list<Args...>* m_adjacency_list_ptr;
 		//スタック
-		static std::stack<unsigned int> m_stack;
+		std::stack<unsigned int> m_stack;
 		//探索したかどうか
-		static std::unordered_map<unsigned int, bool> m_is_searched;
+		std::unordered_map<unsigned int, bool> m_is_searched;
 
 	public:
-		static int init(const adjacency_list<Args...>* const g, unsigned int from)
+		constexpr DFS_iterator_body()
+			:m_adjacency_list_ptr{nullptr}
+			, m_stack{}
+			, m_is_searched{}
+		{}
+
+		int init(const adjacency_list<Args...>* const g, unsigned int from)
 		{
 			//fromが有効な値でないとき
 			if (g->get_adjacency_vertex_list().find(from) == g->get_adjacency_vertex_list().end())
-				return search_iterator<DFS_iterator_type<IsPreorder, Args...>>::end();
+				return search_iterator<DFS_iterator_body<IsPreorder, Args...>>::end();
 
 			//以下、それぞれ初期化
 
@@ -54,7 +61,7 @@ namespace graph
 			return num;
 		}
 
-		static int increment(int num)
+		int increment(int num)
 		{
 			int next = num;
 			while (1)
@@ -67,10 +74,10 @@ namespace graph
 
 	private:
 		//アルゴリズムを1ステップ進める
-		static int action(int num)
+		int action(int num)
 		{
 			if (m_stack.empty())
-				return search_iterator<DFS_iterator_type<IsPreorder, Args...>>::end();
+				return search_iterator<DFS_iterator_body<IsPreorder, Args...>>::end();
 
 			auto vertexList = m_adjacency_list_ptr->get_adjacency_vertex(m_stack.top());
 			bool pushFlag = false;
@@ -118,20 +125,13 @@ namespace graph
 		}
 	};
 
-	template<bool IsPreorder, typename... Args>
-	const adjacency_list<Args...>* DFS_iterator_type<IsPreorder, Args...>::m_adjacency_list_ptr = nullptr;
-	template<bool IsPreorder, typename... Args>
-	std::stack<unsigned int> DFS_iterator_type<IsPreorder, Args...>::m_stack{};
-	template<bool IsPreorder, typename... Args>
-	std::unordered_map<unsigned int, bool> DFS_iterator_type<IsPreorder, Args...>::m_is_searched{};
-
 
 	//コピー不可、範囲for文の一時オブジェクトとして使用
 	template<bool IsPreorder, typename... Args>
 	struct DFS
 	{
 	private:
-		using DFS_iter = search_iterator<DFS_iterator_type<IsPreorder, Args...>>;
+		using DFS_iter = search_iterator<DFS_iterator_body<IsPreorder, Args...>>;
 
 		const adjacency_list<Args...>* const m_graph;
 		const unsigned int m_from;
@@ -146,7 +146,7 @@ namespace graph
 			return DFS_iter::begin(m_graph, m_from);
 		}
 
-		DFS_iter end() {
+		const DFS_iter& end() {
 			return DFS_iter::end();
 		}
 
@@ -172,3 +172,4 @@ namespace graph
 
 
 }
+
