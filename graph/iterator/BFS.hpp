@@ -5,7 +5,7 @@
 
 namespace graph
 {
-
+	//幅優先探索用Iteratorのボディー
 	template<typename... Args>
 	struct BFS_iterator_body
 	{

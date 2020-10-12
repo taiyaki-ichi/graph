@@ -3,6 +3,7 @@
 
 namespace std
 {
+	//std::pair‚ÌƒnƒbƒVƒ…
 	template<>
 	struct hash<std::pair<unsigned int, unsigned int>> {
 		size_t operator()(const std::pair<unsigned int, unsigned int>& edge) const {

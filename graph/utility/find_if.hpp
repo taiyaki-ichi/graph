@@ -30,7 +30,8 @@ namespace graph
 			>::type;
 		};
 
-		//インターフェース
+
+		//Listの中からPredicateをTrueにするような型の取得
 		template<template<typename>typename Predicate, typename... List>
 		struct find_if
 		{
@@ -40,7 +41,7 @@ namespace graph
 		};
 
 
-
+		//Tを含んているかどうか
 		template<typename T,typename... List>
 		struct contain 
 		{

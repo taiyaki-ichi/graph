@@ -2,12 +2,14 @@
 #include<stack>
 #include<unordered_map>
 #include<memory>
+#include<type_traits>
 #include"../adjacency_list.hpp"
 
 namespace graph
 {
 
 	//もととなるイテレータもどき
+	//SerchBodyにデフォルトコンストラクタ,init,incrementを要求
 	template<typename SearchBody>
 	struct search_iterator
 	{
@@ -17,13 +19,16 @@ namespace graph
 		//添え字
 		int m_num;
 
+		//SearchBodyへのポインタ
 		std::shared_ptr<SearchBody> m_search_body;
 
 	public:
 		search_iterator(int n,std::shared_ptr<SearchBody>&& ptr)
 			:m_num{ n }
 			, m_search_body{std::move(ptr)}
-		{}
+		{
+			static_assert(std::is_default_constructible_v<SearchBody>);
+		}
 
 		template<typename... Ts>
 		static search_iterator begin(Ts... ts) {

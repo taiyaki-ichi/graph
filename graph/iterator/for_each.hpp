@@ -5,6 +5,7 @@
 namespace graph
 {
 	//順不同ですべて探る
+	//listのall_vertex_index参照しすべてのvertexを走査する
 	template<typename... Args>
 	struct for_each_iterator_body
 	{
@@ -28,6 +29,7 @@ namespace graph
 		}
 	};
 
+	//範囲for文用の一時オブジェクト
 	template<typename... Args>
 	struct for_each
 	{
