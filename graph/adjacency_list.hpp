@@ -83,11 +83,11 @@ namespace graph
 		
 
 	public:
-		adjacency_list() = default;
+		constexpr adjacency_list() = default;
 		virtual ~adjacency_list() = default;
 
 		template<typename Container>
-		adjacency_list(Container&& list)
+		constexpr adjacency_list(Container&& list)
 			:m_adjacency_list {}
 			, m_vertex_property_list{}
 			, m_edge_property_list{}
@@ -112,24 +112,24 @@ namespace graph
 			}
 		}
 
-		adjacency_list(const adjacency_list& rhs) {
+		constexpr adjacency_list(const adjacency_list& rhs) {
 			m_adjacency_list = rhs.m_adjacency_list;
 			m_vertex_property_list = rhs.m_vertex_property_list;
 			m_edge_property_list = rhs.m_edge_property_list;
 		}
-		adjacency_list(adjacency_list&& rhs) {
+		constexpr adjacency_list(adjacency_list&& rhs) {
 			m_adjacency_list = std::move(rhs.m_adjacency_list);
 			m_vertex_property_list = std::move(rhs.m_vertex_property_list);
 			m_edge_property_list = std::move(m_edge_property_list);
 		}
 
-		adjacency_list& operator=(const adjacency_list& rhs) {
+		constexpr adjacency_list& operator=(const adjacency_list& rhs) {
 			m_adjacency_list = rhs.m_adjacency_list;
 			m_vertex_property_list = rhs.m_vertex_property_list;
 			m_edge_property_list = rhs.m_edge_property_list;
 			return *this;
 		}
-		adjacency_list& operator=(adjacency_list&& rhs) {
+		constexpr adjacency_list& operator=(adjacency_list&& rhs) {
 			m_adjacency_list = std::move(rhs.m_adjacency_list);
 			m_vertex_property_list = std::move(rhs.m_vertex_property_list);
 			m_edge_property_list = std::move(m_edge_property_list);
@@ -137,7 +137,7 @@ namespace graph
 		}
 	
 		//vertexを生成
-		bool add_vertex(unsigned int n) {
+		constexpr bool add_vertex(unsigned int n) {
 			if (m_adjacency_list.try_emplace(n, std::set<unsigned int>{}).second)
 			{
 				m_vertex_property_list.emplace(n, vertex_property{});
@@ -148,7 +148,7 @@ namespace graph
 		}
 
 		//edge生成
-		bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
+		constexpr bool add_edge(const std::pair<unsigned int, unsigned int>& edge) {
 
 			if (m_adjacency_list.find(edge.first) == m_adjacency_list.end() ||
 				m_adjacency_list.find(edge.second) == m_adjacency_list.end())
@@ -170,7 +170,7 @@ namespace graph
 			return true;
 		}
 
-		bool add_edge(const std::pair<unsigned int, unsigned int>& edge, const edge_property& property) {
+		constexpr bool add_edge(const std::pair<unsigned int, unsigned int>& edge, const edge_property& property) {
 			if (add_edge(edge))
 			{
 				set_property({ edge, property });
@@ -181,7 +181,7 @@ namespace graph
 		}
 		
 		//頂点と関連する辺を削除
-		void remove_vertex(unsigned int v)
+		constexpr void remove_vertex(unsigned int v)
 		{
 			//リストの操作
 			auto iter = m_adjacency_list.find(v);
@@ -207,7 +207,7 @@ namespace graph
 		}
 
 		//辺の削除
-		void remove_edge(const std::pair<unsigned int, unsigned int>& edge)
+		constexpr void remove_edge(const std::pair<unsigned int, unsigned int>& edge)
 		{
 			const auto erase_if = [this](unsigned int a, unsigned int b) {
 				auto iter = m_adjacency_list.find(a);
@@ -232,7 +232,7 @@ namespace graph
 
 
 	private:
-		void print_impl(const std::function<void(unsigned int)>& printFunc)
+		constexpr void print_impl(const std::function<void(unsigned int)>& printFunc)
 		{
 			for (const auto& v : m_adjacency_list)
 			{
@@ -253,7 +253,7 @@ namespace graph
 			}
 		}
 	public:
-		void print() {
+		constexpr void print() {
 			const auto printFnc = [](unsigned int num) {
 				std::cout << num;
 			};
@@ -261,7 +261,7 @@ namespace graph
 		}
 
 		template<typename T>
-		void print(T&& str) {
+		constexpr void print(T&& str) {
 			const auto printFunc = [&str](unsigned int num) {
 				std::cout << str[num];
 			};
@@ -269,18 +269,18 @@ namespace graph
 		}
 
 		//全部のリストの取得
-		const std::unordered_map<unsigned int, std::set<unsigned int>>& get_adjacency_vertex_list() const {
+		constexpr const std::unordered_map<unsigned int, std::set<unsigned int>>& get_adjacency_vertex_list() const {
 			return m_adjacency_list;
 		}
 
 		//ある頂点に隣接しているリストの取得
-		const std::set<unsigned int>& get_adjacency_vertex(unsigned int v) const
+		constexpr const std::set<unsigned int>& get_adjacency_vertex(unsigned int v) const
 		{
 			return m_adjacency_list.at(v);
 		}
 
 		//すべての頂点の添え字を取得
-		std::vector<unsigned int> get_all_vertex_index() const
+		constexpr std::vector<unsigned int> get_all_vertex_index() const
 		{
 			std::vector<unsigned int> result;
 			for (const auto& tmp : m_adjacency_list)
@@ -288,31 +288,31 @@ namespace graph
 			return result;
 		}
 
-		const vertex_property& operator[](unsigned int v) const {
+		constexpr const vertex_property& operator[](unsigned int v) const {
 			return m_vertex_property_list[v];
 		}
-		vertex_property& operator[](unsigned v) {
+		constexpr vertex_property& operator[](unsigned v) {
 			return m_vertex_property_list[v];
 		}
 
-		const edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) const {
+		constexpr const edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) const {
 			return m_edge_property_list.at(edge);
 		}
-		edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) {
+		constexpr edge_property& operator[](const std::pair<unsigned int, unsigned int>& edge) {
 			return m_edge_property_list[edge];
 		}
 
 		//頂点情報のセッティング
-		void set_property(std::pair<unsigned int, vertex_property>&& p) {
+		constexpr void set_property(std::pair<unsigned int, vertex_property>&& p) {
 			m_vertex_property_list[p.first] = std::move(p.second);
 		}
-		void set_property(std::vector<std::pair<unsigned int, vertex_property>>&& ps) {
+		constexpr void set_property(std::vector<std::pair<unsigned int, vertex_property>>&& ps) {
 			for (auto&& p : ps)
 				set_property(std::move(p));
 		}
 
 		//辺の情報のセッティング
-		void set_property(std::pair<std::pair<unsigned int, unsigned int>, edge_property>&& p) {
+		constexpr void set_property(std::pair<std::pair<unsigned int, unsigned int>, edge_property>&& p) {
 			if constexpr (is_directed::value)
 				m_edge_property_list[p.first] = p.second;
 			else
@@ -321,14 +321,10 @@ namespace graph
 				m_edge_property_list[{p.first.second, p.first.first}] = p.second;
 			}
 		}
-		void set_property(std::vector<std::pair<std::pair<unsigned int, unsigned int>, edge_property>>&& ps) {
+		constexpr void set_property(std::vector<std::pair<std::pair<unsigned int, unsigned int>, edge_property>>&& ps) {
 			for (auto&& p : ps)
 				set_property(std::move(p));
 		}
-
-
-
-
 
 	};
 
