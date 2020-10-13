@@ -12,7 +12,7 @@
 
 int main()
 {
-	/*
+	
 	auto myGraph = get_samplegraph2();
 
 	myGraph.print();
@@ -56,7 +56,6 @@ int main()
 		std::cout << iter << "\n";
 	std::cout << "\n";
 
-	*/
 
 	std::vector<std::pair<unsigned int, unsigned int>> edge{
 		{0,1},
@@ -71,7 +70,7 @@ int main()
 
 	graph::adjacency_list<graph::directed> g3{ std::move(edge) };
 
-	auto groups = graph::connected_components<graph::strong>(g3);
+	auto groups = graph::connected_components<graph::strong_connection_tag>(g3);
 
 	for (const auto& g : groups)
 	{

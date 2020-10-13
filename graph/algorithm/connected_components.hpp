@@ -4,8 +4,8 @@
 
 namespace graph
 {
-	struct weak {};
-	struct strong {};
+	struct weak_connection_tag {};
+	struct strong_connection_tag {};
 
 	//普通の連結の検出用
 	template<typename... Args>
@@ -18,11 +18,11 @@ namespace graph
 	//WeakOrStrengthは有効グラフの場合適用可能
 	//無効グラフなら無視
 	//戻り値はグループ、今のところ
-	template<typename WeakOrStrength=weak,typename... Args>
+	template<typename WeakOrStrength=weak_connection_tag,typename... Args>
 	std::vector<std::vector<unsigned int>> connected_components(const adjacency_list<Args...>& g)
 	{
 		using isDirected = typename utility::contain<directed, Args...>::type;
-		using isStrong = typename std::is_same<WeakOrStrength, strong>::type;
+		using isStrong = typename std::is_same<WeakOrStrength, strong_connection_tag>::type;
 
 		//有効グラフであり強連結を求める場合
 		if constexpr (std::conjunction_v<isDirected, isStrong>)

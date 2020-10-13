@@ -24,12 +24,9 @@ inline graph::adjacency_list<graph::directed> get_samplegraph1()
 	return result;
 }
 
-
-struct my_vertex_property {};
 struct my_edge_property { int weight; };
 
 using path_graph = graph::adjacency_list<
-	graph::set_vertex_property<my_vertex_property>,
 	graph::set_edge_property<my_edge_property>,
 	graph::directed
 >;
