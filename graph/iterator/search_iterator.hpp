@@ -65,8 +65,8 @@ namespace graph
 		}
 
 		//ˆÃ–Ù“I‚É“Y‚¦Žš‚É•ÏŠ·
-		operator int() const {
-			return m_num;
+		operator unsigned int() const {
+			return static_cast<unsigned int>(m_num);
 		}
 	};
 

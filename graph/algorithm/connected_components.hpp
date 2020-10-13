@@ -39,22 +39,27 @@ namespace graph
 	{
 		std::vector<std::vector<unsigned int>> result{};
 
-		auto uncheked_index = g.get_all_vertexes();
+		//’Tõ‚µ‚½‚©‚ÌƒŠƒXƒg‚Ìì»
+		auto vert = g.get_all_vertexes();
+		std::unordered_map<unsigned int, bool> is_checked{};
+		for (auto v : vert)
+			is_checked.emplace(v, false);
 
-		while (!uncheked_index.empty())
+		for (auto value : is_checked)
 		{
-			std::vector<unsigned int> group{};
-			//[‚³—Dæ’Tõ‚Å˜AŒ‹•”•ª‚ÌŒŸo
-			for (auto iter : DFS_preorder{ g,uncheked_index[0] })
+			//–¢’Tõ‚Ìê‡
+			if (!value.second)
 			{
-				auto v = static_cast<unsigned int>(iter);
-				group.emplace_back(v);
+				std::vector<unsigned int> group{};
+				//[‚³—Dæ’Tõ‚Å˜AŒ‹•”•ª‚ÌŒŸo
+				for (auto v : DFS_preorder{ g,value.first })
+				{
+					group.emplace_back(v);
+					is_checked.insert_or_assign(v, true);
+				}
 
-				//O(n)‚ÍŒ™‚¾
-				uncheked_index.erase(std::remove(uncheked_index.begin(), uncheked_index.end(), v), uncheked_index.end());
+				result.emplace_back(std::move(group));
 			}
-
-			result.emplace_back(std::move(group));
 		}
 
 		return result;
@@ -66,20 +71,24 @@ namespace graph
 	{
 		std::vector<std::vector<unsigned int>> result{};
 
-		auto unchecked_v = g.get_all_vertexes();
+		auto vert = g.get_all_vertexes();
+		std::unordered_map<unsigned int, bool> is_checked{};
+		for (auto v : vert)
+			is_checked.emplace(v, false);
+
 		//ŒãU‡‚Ìƒƒ‚
 		std::vector<unsigned int> postorder{};
 
-		unsigned int num = 1;
-		while (!unchecked_v.empty())
+		for (auto value : is_checked)
 		{
-			for (auto v : DFS_postorder{ g,unchecked_v[0] })
+			//–¢’Tõ‚Ìê‡
+			if (!value.second)
 			{
-				postorder.emplace_back(v);
-				num++;
-
-				//O(n)‚ÍŒ™‚¾
-				unchecked_v.erase(std::remove(unchecked_v.begin(), unchecked_v.end(), v), unchecked_v.end());
+				for (auto v : DFS_postorder{ g,value.first })
+				{
+					postorder.emplace_back(v);
+					is_checked.insert_or_assign(v, true);
+				}
 			}
 		}
 
@@ -90,24 +99,32 @@ namespace graph
 
 		auto newG = adjacency_list<Args...>{ std::move(edge) };
 
+		//’Tõ‚µ‚½‚©‚Ç‚¤‚©‚ÌƒŠƒXƒgì¬
+		is_checked.clear();
+		for (auto v : vert)
+			is_checked.emplace(v, false);
+
 		while (!postorder.empty())
 		{
 			//Œãs‡‚É[‚³—Dæ’Tõ
-			auto start = *(postorder.end() - 1);
-			postorder.erase(postorder.end() - 1);
-
-			std::vector<unsigned int> group{};
-			for (auto i : DFS_postorder{ newG,start })
-			{
-				auto v = static_cast<unsigned int>(i);
-				group.emplace_back(v);
-			}
-
-			for (auto v : group)
-				newG.remove_vertex(v);
+			auto start = postorder.back();
+			postorder.pop_back();
 			
-			if (!group.empty())
+			//start‚ª–¢’Tõ‚Ìê‡
+			if (!is_checked[start])
+			{
+				std::vector<unsigned int> group{};
+				for (auto v : DFS_postorder{ newG,start }) {
+					//–¢’Tõ‚Ìê‡Group‚É’Ç‰Á
+					if (!is_checked[v])
+					{
+						group.emplace_back(v);
+						is_checked.insert_or_assign(v, true);
+					}
+				}
 				result.emplace_back(group);
+			}
+			
 		}
 
 		return result;
