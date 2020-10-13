@@ -141,12 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="dijkstra_shortest_paths.hpp" />
+    <ClInclude Include="algorithm\connected_components.hpp" />
+    <ClInclude Include="algorithm\dijkstra_shortest_paths.hpp" />
     <ClInclude Include="iterator\BFS.hpp" />
     <ClInclude Include="iterator\DFS.hpp" />
     <ClInclude Include="iterator\for_each.hpp" />
     <ClInclude Include="iterator\search_iterator.hpp" />
     <ClInclude Include="adjacency_list.hpp" />
+    <ClInclude Include="sample_graph.hpp" />
     <ClInclude Include="utility\find_if.hpp" />
     <ClInclude Include="utility\get_optional_arg.hpp" />
     <ClInclude Include="utility\pair_hash.hpp" />

@@ -35,7 +35,7 @@ namespace graph
 			//ˆÈ‰ºA‚»‚ê‚¼‚ê‰Šú‰»
 
 			m_is_searched.clear();
-			auto vertex = g->get_all_vertex_index();
+			auto vertex = g->get_all_vertexes();
 			for (auto num : vertex)
 				m_is_searched.insert({ num, false });
 			m_is_searched.insert_or_assign(from, true);
@@ -57,6 +57,11 @@ namespace graph
 					if (num != from)
 						break;
 				}
+
+				//˜AŒ‹‚µ‚Ä‚¢‚é—v‘f‚ª1‚Â‚Ì‚Æ‚«‚É
+				//Å‰‚Ìaction‚Åend‚É‚È‚Á‚Ä‚µ‚Ü‚í‚È‚¢‚æ‚¤‚É
+				if (num == search_iterator<DFS_iterator_body<IsPreorder, Args...>>::end())
+					num = from;
 			}
 
 			return num;
@@ -81,6 +86,7 @@ namespace graph
 				return search_iterator<DFS_iterator_body<IsPreorder, Args...>>::end();
 
 			auto vertexList = m_adjacency_list_ptr->get_adjacency_vertex(m_stack.top());
+
 			bool pushFlag = false;
 			for (auto vertex : vertexList)
 			{

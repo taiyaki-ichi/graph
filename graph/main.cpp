@@ -5,45 +5,15 @@
 #include"iterator/BFS.hpp"
 #include"iterator/DFS.hpp"
 
-#include"dijkstra_shortest_paths.hpp"
+#include"algorithm/dijkstra_shortest_paths.hpp"
+#include"algorithm/connected_components.hpp"
 
-struct my_vertex_property{};
-struct my_edge_property { int weight; };
+#include"sample_graph.hpp"
 
 int main()
 {
-	
-	using my_graph = graph::adjacency_list<
-		graph::set_vertex_property<my_vertex_property>,
-		graph::set_edge_property<my_edge_property>,
-		graph::directed
-	>;
-
-	my_graph myGraph{};
-	
-	myGraph.add_vertex(0);
-	myGraph.add_vertex(1);
-	myGraph.add_vertex(2);
-	myGraph.add_vertex(3);
-	myGraph.add_vertex(4);
-	myGraph.add_vertex(5);
-	myGraph.add_vertex(6);
-	myGraph.add_vertex(7);
-
-	myGraph.add_edge({ 0,1 }, {5});
-	myGraph.add_edge({ 0,2 }, {9});
-	myGraph.add_edge({ 0,3 }, {2});
-	myGraph.add_edge({ 0,4 }, {15});
-	myGraph.add_edge({ 1,2 }, {7});
-	myGraph.add_edge({ 2,5 }, {8});
-	myGraph.add_edge({ 3,4 }, {1});
-	myGraph.add_edge({ 3,6 }, {11});
-	myGraph.add_edge({ 4,2 }, {7});
-	myGraph.add_edge({ 4,5 }, {1});
-	myGraph.add_edge({ 4,7 }, {8});
-	myGraph.add_edge({ 5,7 }, {3});
-	myGraph.add_edge({ 6,4 }, {9});
-	myGraph.add_edge({ 6,7 }, {2});
+	/*
+	auto myGraph = get_samplegraph2();
 
 	myGraph.print();
 	std::cout << "\n";
@@ -68,21 +38,7 @@ int main()
 	std::cout << "\n";
 
 
-	graph::adjacency_list<graph::directed> myGraph2{};
-
-	myGraph2.add_vertex(0);
-	myGraph2.add_vertex(1);
-	myGraph2.add_vertex(2);
-	myGraph2.add_vertex(3);
-	myGraph2.add_vertex(4);
-	myGraph2.add_vertex(5);
-	myGraph2.add_vertex(6);
-	myGraph2.add_edge({ 0,1 });
-	myGraph2.add_edge({ 0,2 });
-	myGraph2.add_edge({ 1,3 });
-	myGraph2.add_edge({ 3,4 });
-	myGraph2.add_edge({ 2,5 });
-	myGraph2.add_edge({ 2,6 });
+	auto myGraph2 = get_samplegraph1();
 
 	for (auto iter : graph::BFS{ myGraph2,0 })
 		std::cout << iter << "\n";
@@ -99,6 +55,33 @@ int main()
 	for (auto iter : graph::for_each{ myGraph2 })
 		std::cout << iter << "\n";
 	std::cout << "\n";
+
+	*/
+
+	std::vector<std::pair<unsigned int, unsigned int>> edge{
+		{0,1},
+		{1,2},
+		{2,0},
+		{2,3},
+		{3,4},
+		{4,3},
+		{4,5},
+		{4,6}
+	};
+
+	graph::adjacency_list<graph::directed> g3{ std::move(edge) };
+
+	auto groups = graph::connected_components<graph::strong>(g3);
+
+	for (const auto& g : groups)
+	{
+		for (const auto& v : g)
+		{
+			std::cout << v << " ";
+		}
+		std::cout << "\n";
+	}
+
 
 	return 0;
 }

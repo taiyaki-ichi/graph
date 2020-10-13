@@ -120,7 +120,7 @@ namespace graph
 		constexpr adjacency_list(adjacency_list&& rhs) {
 			m_adjacency_list = std::move(rhs.m_adjacency_list);
 			m_vertex_property_list = std::move(rhs.m_vertex_property_list);
-			m_edge_property_list = std::move(m_edge_property_list);
+			m_edge_property_list = std::move(rhs.m_edge_property_list);
 		}
 
 		constexpr adjacency_list& operator=(const adjacency_list& rhs) {
@@ -132,7 +132,7 @@ namespace graph
 		constexpr adjacency_list& operator=(adjacency_list&& rhs) {
 			m_adjacency_list = std::move(rhs.m_adjacency_list);
 			m_vertex_property_list = std::move(rhs.m_vertex_property_list);
-			m_edge_property_list = std::move(m_edge_property_list);
+			m_edge_property_list = std::move(rhs.m_edge_property_list);
 			return this;
 		}
 	
@@ -154,7 +154,7 @@ namespace graph
 				m_adjacency_list.find(edge.second) == m_adjacency_list.end())
 				return false;
 
-			const auto add_if = [this](unsigned int a, unsigned int b)
+			auto add_if = [this](unsigned int a, unsigned int b)
 			{
 				if (m_adjacency_list.at(a).insert(b).second)
 					m_edge_property_list.insert({ std::make_pair(a,b),{} });
@@ -279,12 +279,26 @@ namespace graph
 			return m_adjacency_list.at(v);
 		}
 
-		//すべての頂点の添え字を取得
-		constexpr std::vector<unsigned int> get_all_vertex_index() const
+		//すべての頂点を取得
+		constexpr std::vector<unsigned int> get_all_vertexes() const
 		{
-			std::vector<unsigned int> result;
+			std::vector<unsigned int> result{};
 			for (const auto& tmp : m_adjacency_list)
 				result.emplace_back(tmp.first);
+			return result;
+		}
+
+		//グラフのすべての辺の取得
+		constexpr std::vector<std::pair<unsigned int, unsigned int>> get_all_edges() const
+		{
+			std::vector<std::pair<unsigned int, unsigned int>> result{};
+			for (const auto& vert : m_adjacency_list)
+			{
+				unsigned int from = vert.first;
+				for (auto to : vert.second)
+					result.emplace_back(std::make_pair(from,to));
+			}
+
 			return result;
 		}
 

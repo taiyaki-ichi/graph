@@ -17,15 +17,15 @@ namespace graph
 		int init(const adjacency_list<Args...>* g) {
 			m_adjacency_list = g;
 			m_index = 0;
-			return m_adjacency_list->get_all_vertex_index()[m_index];
+			return m_adjacency_list->get_all_vertexes()[m_index];
 		}
 
 		int increment(int) {
 			m_index++;
-			if (m_index >= static_cast<int>(m_adjacency_list->get_all_vertex_index().size()))
+			if (m_index >= static_cast<int>(m_adjacency_list->get_all_vertexes().size()))
 				return -1;
 			else
-				return m_adjacency_list->get_all_vertex_index()[m_index];
+				return m_adjacency_list->get_all_vertexes()[m_index];
 		}
 	};
 

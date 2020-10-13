@@ -33,7 +33,7 @@ namespace graph
 			//ˆÈ‰ºA‚»‚ê‚¼‚ê‰Šú‰»
 
 			m_is_searched.clear();
-			auto vertex = g->get_all_vertex_index();
+			auto vertex = g->get_all_vertexes();
 			for (auto num : vertex)
 				m_is_searched.insert({ num, false });
 			m_is_searched.insert_or_assign(from, true);
